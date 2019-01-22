@@ -53,7 +53,6 @@ class Mini
      * @param $code
      * @return array|false
      * @throws Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get($code)
     {
@@ -68,7 +67,7 @@ class Mini
         $data      = json_decode($result, true);
 
         if (empty($data)) {
-            return false;
+            throw new Exception('微信返回数据解密失败');
         }
 
         return [

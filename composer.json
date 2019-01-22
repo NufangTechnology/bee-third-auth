@@ -15,7 +15,8 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "~6.1",
         "symfony/serializer": "~3.4|~4.0",
-        "bee-framework/util": "^2.0"
+        "bee-framework/util": "^2.0",
+      "ext-openssl": "*"
     },
     "autoload": {
         "psr-4": { "Bee\\ThirdAuth\\": "./src" }
