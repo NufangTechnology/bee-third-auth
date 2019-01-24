@@ -67,7 +67,7 @@ class Mini
         $data      = json_decode($result, true);
 
         if (empty($data)) {
-            throw new Exception('微信返回数据解密失败');
+            throw new Exception('微信返回数据解密失败', 401000);
         }
 
         return [
