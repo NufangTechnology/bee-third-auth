@@ -59,7 +59,7 @@ class Mini
         $response  = $this->rawBody($code);
 
         $decodeKey = base64_decode($response['session_key']);
-        $decodeIv  = urldecode(base64_decode($this->iv));
+        $decodeIv  = base64_decode(urldecode($this->iv));
         $decodeEd  = base64_decode($this->ed);
 
         // 获取加密结果
