@@ -56,13 +56,12 @@ class Mini
      */
     public function get($code)
     {
-        $decodeKey = base64_decode($response['session_key']);
-        $decodeIv  = base64_decode(urldecode($this->iv));
+        $decodeIv  = base64_decode($this->iv);
         $decodeEd  = base64_decode($this->ed);
 
         // 检查iv
         if (strlen($decodeIv) != 16) {
-            $decodeIv = base64_decode($this->iv);
+            $decodeIv = base64_decode(urldecode($this->iv));
 
             if (strlen($decodeIv) != 16) {
                 throw new Exception('iv长度错误: [iv]' . $this->iv);
@@ -77,6 +76,7 @@ class Mini
         if (strlen($sessionKey) != 20) {
             throw new Exception('sesskon_key错误: ' . $sessionKey, 401900);
         }
+        $decodeKey = base64_decode($response['session_key']);
 
         // 获取加密结果
         $result    = openssl_decrypt($decodeEd, 'AES-128-CBC', $decodeKey, 1, $decodeIv);
