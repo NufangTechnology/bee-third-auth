@@ -72,11 +72,11 @@ class Mini
         $response  = $this->rawBody($code);
 
         // 检查session key
-        $sessionKey = $response['session_key'] ?? '';
-        if (strlen($sessionKey) != 20) {
-            throw new Exception('sesskon_key错误: ' . $sessionKey, 401900);
+        $sessionKey = $response['session_key'];
+        if (empty($sessionKey)) {
+            throw new Exception('sesskon_key获取失败', 401900);
         }
-        $decodeKey = base64_decode($response['session_key']);
+        $decodeKey = base64_decode($sessionKey);
 
         // 获取加密结果
         $result    = openssl_decrypt($decodeEd, 'AES-128-CBC', $decodeKey, 1, $decodeIv);
@@ -92,7 +92,7 @@ class Mini
             'nickName'   => $data['nickName'],
             'sex'        => $data['gender'],
             'avatarUrl'  => $data['avatarUrl'],
-            'sessionKey' => $response['session_key'],
+            'sessionKey' => $sessionKey,
         ];
     }
 
