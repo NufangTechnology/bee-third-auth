@@ -2,7 +2,7 @@
     "name": "bee-framework/third-auth",
     "description": "Bee框架第三方登录组件",
     "keywords": ["wechat", "weixin", "微信"],
-    "homepage": "https://github.com/Anoxia/bee-third-auth",
+    "homepage": "https://github.com/NufangTechnology/bee-third-auth",
     "license": "MIT",
     "authors": [
         {
@@ -15,7 +15,7 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "~6.1",
         "symfony/serializer": "~3.4|~4.0",
-        "bee-framework/util": "^2.0",
+        "bee-framework/util": "^1.0",
       "ext-openssl": "*"
     },
     "autoload": {
