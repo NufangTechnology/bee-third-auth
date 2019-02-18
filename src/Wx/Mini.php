@@ -56,18 +56,34 @@ class Mini
      */
     public function get($code)
     {
+        $decodeIv  = base64_decode($this->iv);
+        $decodeEd  = base64_decode($this->ed);
+
+        // 检查iv
+        if (strlen($decodeIv) != 16) {
+            $decodeIv = base64_decode(urldecode($this->iv));
+
+            if (strlen($decodeIv) != 16) {
+                throw new Exception('iv长度错误: [iv]' . $this->iv);
+            }
+        }
+
+        // 获取session key
         $response  = $this->rawBody($code);
 
-        $decodeKey = base64_decode($response['session_key']);
-        $decodeIv  = base64_decode(urldecode($this->iv));
-        $decodeEd  = base64_decode($this->ed);
+        // 检查session key
+        $sessionKey = $response['session_key'];
+        if (empty($sessionKey)) {
+            throw new Exception('sesskon_key获取失败', 401900);
+        }
+        $decodeKey = base64_decode($sessionKey);
 
         // 获取加密结果
         $result    = openssl_decrypt($decodeEd, 'AES-128-CBC', $decodeKey, 1, $decodeIv);
         $data      = json_decode($result, true);
 
         if (empty($data)) {
-            throw new Exception('微信返回数据解密失败', 401900);
+            throw new Exception('微信返回数据解密失败: [key]' . $decodeKey . ', [iv]' . $decodeIv . ', [ed]' . $decodeEd, 401901);
         }
 
         return [
@@ -76,7 +92,7 @@ class Mini
             'nickName'   => $data['nickName'],
             'sex'        => $data['gender'],
             'avatarUrl'  => $data['avatarUrl'],
-            'sessionKey' => $response['session_key'],
+            'sessionKey' => $sessionKey,
         ];
     }
 
